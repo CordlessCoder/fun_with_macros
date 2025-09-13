@@ -47,7 +47,19 @@ macro_rules! __delimited_fmt_inner {
     }};
 }
 
+#[allow(unused_imports)]
+use core::fmt::Display;
 #[macro_export]
+/// A simple macro that bundles values into a container that, when formatted using [Display], will
+/// print all its values with a specified delimiter.
+///
+/// # Example:
+/// ```rust
+/// # use fun_with_macros::delimited_fmt;
+/// let delimited = delimited_fmt!(", ", 1, 2, 3, "foo", "bar", "baz");
+/// let formatted = format!("{delimited}");
+/// assert_eq!(formatted, "1, 2, 3, foo, bar, baz");
+/// ```
 macro_rules! delimited_fmt {
     ($($val:expr),*) => {{
         struct DisplayWithFn<F: Fn(&mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result>(F);
